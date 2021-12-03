@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>adventofcode2021</groupId>
-	<artifactId>day02</artifactId>
+	<artifactId>day03</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<build>
