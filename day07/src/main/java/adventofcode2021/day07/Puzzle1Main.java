@@ -15,16 +15,16 @@ public class Puzzle1Main {
 			AtomicInteger max = new AtomicInteger(Integer.MIN_VALUE);
 			int[] crabs = Arrays.stream(reader.readLine().split(","))
 					.mapToInt(Integer::parseInt)
+					.map(v -> {
+						if(v < min.get()) {
+							min.set(v);
+						} else if(v > max.get()) {
+							max.set(v);
+						}
+						return v;
+					})
 					.sorted()
 					.toArray();
-			Arrays.stream(crabs)
-			.forEach(v -> {
-				if(v < min.get()) {
-					min.set(v);
-				} else if(v > max.get()) {
-					max.set(v);
-				}
-			});
 			int fuelRequired = Arrays.stream(crabs)
 					.map(v -> v - min.get())
 					.sum();

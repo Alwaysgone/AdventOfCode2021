@@ -16,16 +16,16 @@ public class Puzzle2Main {
 			AtomicInteger max = new AtomicInteger(Integer.MIN_VALUE);
 			int[] crabs = Arrays.stream(reader.readLine().split(","))
 					.mapToInt(Integer::parseInt)
+					.map(v -> {
+						if(v < min.get()) {
+							min.set(v);
+						} else if(v > max.get()) {
+							max.set(v);
+						}
+						return v;
+					})
 					.sorted()
 					.toArray();
-			Arrays.stream(crabs)
-			.forEach(v -> {
-				if(v < min.get()) {
-					min.set(v);
-				} else if(v > max.get()) {
-					max.set(v);
-				}
-			});
 			int currentLowest = Integer.MAX_VALUE;
 			for(int i = min.get(); i < max.get(); i++) {
 				int fuelRequirement = 0;
