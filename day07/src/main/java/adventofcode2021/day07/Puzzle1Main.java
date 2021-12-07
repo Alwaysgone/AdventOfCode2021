@@ -44,25 +44,7 @@ public class Puzzle1Main {
 					break;
 				}
 			}
-//			int currentLowest = Integer.MAX_VALUE;
-//			for(int i = min.get(); i < max.get(); i++) {
-//				int fuelRequirement = 0;
-//				for(int j = 0; j < crabs.length; j++) {
-//					fuelRequirement += Math.abs(i - crabs[j]);
-//				}
-//				if(fuelRequirement < currentLowest) {
-//					currentLowest = fuelRequirement;
-//				}
-//			}
-
-			// currentLevel 308
-			// crabIndex 502
-			
-			// 340056
-			
 			System.out.println(fuelRequired);
-			
-//			System.out.println(currentLowest);
 		}
 	}
 }
