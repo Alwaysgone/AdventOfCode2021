@@ -66,7 +66,6 @@ public class Puzzle2Main {
 				}
 				printMarks(currentMarks);
 			}
-//			System.out.println("Marks count after 1 fold: " + marksCounter);
 		}
 	}
 
