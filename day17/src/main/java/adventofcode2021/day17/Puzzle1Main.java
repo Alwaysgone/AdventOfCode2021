@@ -1,4 +1,4 @@
-package adventofcode2021.day16;
+package adventofcode2021.day17;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
