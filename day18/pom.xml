@@ -7,14 +7,6 @@
 	<artifactId>day18</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.psjava</groupId>
-			<artifactId>psjava</artifactId>
-			<version>0.1.19</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
