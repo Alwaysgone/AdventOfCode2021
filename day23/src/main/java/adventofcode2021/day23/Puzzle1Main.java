@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Puzzle1Main {
 
@@ -21,7 +21,7 @@ public class Puzzle1Main {
 			char[] room2 = new char[2];
 			char[] room3 = new char[2];
 			char[] room4 = new char[2];
-			
+
 			int roomIndex = 1;
 			while((line = reader.readLine()) != null) {
 				if((line.startsWith("###") || line.startsWith("  #")) && line.charAt(3) != '#') {
@@ -35,9 +35,39 @@ public class Puzzle1Main {
 				}
 			}
 			Amphipods amphipods = new Amphipods(hallway, room1, room2, room3, room4, 0);
+
+			List<Amphipods> solutions = new LinkedList<>();
+			List<Amphipods> states = amphipods.getNextStates(15170);
+			int iteration = 1;
+			while(!states.isEmpty()) {
+				List<Amphipods> nextStates = new LinkedList<>();
+				long start = System.currentTimeMillis();
+				for(Amphipods state : states) {
+					//					nextStates.addAll(
+					//15170
+					for(Amphipods nextState : state.getNextStates(12700)) {
+						if(nextState.isDone()) {
+							System.out.println("Found solution with energy used: " + nextState.energyUsed);
+							solutions.add(nextState);
+						} else {
+							nextStates.add(nextState);
+						}
+					}
+					
+					//							);
+				}
+				System.out.println("At iteration " + iteration++ + " took " + (System.currentTimeMillis() - start) + " ms");
+				states = nextStates;
+			}
 			
-			List<Amphipods> nextMoves = amphipods.getNextMoves(15170);
-			System.out.println(nextMoves.size());
+			int lowestEnergy = 20_000;
+			for(Amphipods solution : solutions) {
+				if(solution.energyUsed < lowestEnergy) {
+					lowestEnergy = solution.energyUsed;
+				}
+			}
+			
+			System.out.println("Found " + solutions.size() + " solutions with lowest energy " + lowestEnergy);
 		}
 	}
 }

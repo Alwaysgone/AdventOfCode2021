@@ -31,8 +31,11 @@ public class Amphipods {
 		this.energyUsed = energyUsed;
 	}
 
-	List<Amphipods> getNextMoves(int energyUpperBound) {
+	List<Amphipods> getNextStates(int energyUpperBound) {
 		List<Amphipods> amphipods = new LinkedList<>();
+		if(isDone()) {
+			return amphipods;
+		}
 		// add all moves that move amphipods out to the hallway
 		for(int i = 1; i <= 4; i++) {
 			char[] room;
@@ -85,9 +88,9 @@ public class Amphipods {
 				if(roomIndex != -1) {
 					int energy;
 					if(roomIndex == 1) {
-						energy = steps * ENERGY_USAGE.get(room[1]);
+						energy = steps * ENERGY_USAGE.get(room[roomIndex]);
 					} else {
-						energy = (steps + 1) * ENERGY_USAGE.get(room[1]);
+						energy = (steps + 1) * ENERGY_USAGE.get(room[roomIndex]);
 					}
 					int newEnerygUsed = energyUsed + energy;
 					if(newEnerygUsed <= energyUpperBound) {
@@ -115,20 +118,78 @@ public class Amphipods {
 			}
 			char amphipod = hallway[i];
 			if(amphipod != '.') {
+				char[] room;
 				if(amphipod == 'A') {
-					int roomIndex = -1;
-					if(room1[0] == '.') {
-						//room is empty
-						roomIndex = 0;
-					} else if(room1[0] == 'A') {
-						// room already contains an A
-						roomIndex = 1;
+					room = room1;
+				} else if(amphipod == 'B') {
+					room = room2;
+				} else if(amphipod == 'C') {
+					room = room3;
+				} else {
+					room = room4;
+				}
+				
+				int roomNumber = 1;
+				int roomIndex = -1;
+				if(room[0] == '.') {
+					//room is empty
+					roomIndex = 0;
+				} else if(room[0] == amphipod && room[1] == '.') {
+					// room already contains the same amphipod and as empty slot
+					roomIndex = 1;
+				}
+				//		}
+				if(roomIndex != -1) {
+					int steps = 0;
+					boolean blocked = false;
+					if(i < roomNumber * 2) {
+						for(int k = i + 1; k <= roomNumber * 2; k++) {
+							if(hallway[k] != '.') {
+								blocked = true;
+								break;
+							}
+							steps++;
+						}
+					} else {
+						for(int k = roomNumber * 2; k <= i - 1; k++) {
+							if(hallway[k] != '.') {
+								blocked = true;
+								break;
+							}
+							steps++;
+						}
+					}
+					if(blocked) {
+						continue;
+					}
+					//steps counter only goes to room entrance
+					if(roomIndex == 0) {
+						steps += 2;
+					} else {
+						steps += 1;
+					}
+					int energy = steps * ENERGY_USAGE.get(amphipod);
+					int newEnerygUsed = energyUsed + energy;
+					if(newEnerygUsed <= energyUpperBound) {
+						char[] newHallway = Arrays.copyOf(hallway, hallway.length);
+						char[] newRoom = Arrays.copyOf(room, room.length);
+						newRoom[roomIndex] = amphipod;
+						newHallway[i] = '.';
+						if(roomNumber == 1) {
+							amphipods.add(new Amphipods(newHallway, newRoom, room2, room3, room4, energyUsed + energy));
+						} else if(roomNumber == 2) {
+							amphipods.add(new Amphipods(newHallway, room1, newRoom, room3, room4, energyUsed + energy));
+						} else if(roomNumber == 3) {
+							amphipods.add(new Amphipods(newHallway, room1, room2, newRoom, room4, energyUsed + energy));
+						} else {
+							amphipods.add(new Amphipods(newHallway, room1, room2, room3, newRoom, energyUsed + energy));
+						}
 					}
 				}
 			}
 		}
-		
-		
+
+
 		return amphipods;
 	}
 
